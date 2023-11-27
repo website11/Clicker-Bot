@@ -1,16 +1,18 @@
-# This is a sample Python script.
+from mss import mss
+import Capture
+import numpy as np
+import Detection
+import time
+import keyboard
+import pydirectinput
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    screen, game_window = Capture.setup_monitor("Cookie Clicker")
+    screenshot = np.array(screen.grab(game_window))
+    location_to_click = Detection.click_object("Assets/cookie.png", screenshot)
+    while True:
+        if keyboard.is_pressed('v'):  # Check if 'V' is pressed
+            print("Terminating program.")
+            break
+        pydirectinput.moveTo(x=location_to_click[0], y=location_to_click[1])
+        pydirectinput.click()
